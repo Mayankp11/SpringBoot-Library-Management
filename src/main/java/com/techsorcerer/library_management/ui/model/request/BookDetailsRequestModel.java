@@ -5,7 +5,7 @@ public class BookDetailsRequestModel {
 	private String title;
 	private String genre;
 	private String author;
-	private String publishedYear;
+	private int publishedYear;
 
 	public String getBookId() {
 		return bookId;
@@ -39,11 +39,11 @@ public class BookDetailsRequestModel {
 		this.author = author;
 	}
 
-	public String getPublishedYear() {
+	public int getPublishedYear() {
 		return publishedYear;
 	}
 
-	public void setPublishedYear(String publishedYear) {
+	public void setPublishedYear(int publishedYear) {
 		this.publishedYear = publishedYear;
 	}
 

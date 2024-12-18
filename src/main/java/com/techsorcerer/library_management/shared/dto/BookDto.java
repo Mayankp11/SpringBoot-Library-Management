@@ -9,7 +9,7 @@ public class BookDto implements Serializable {
 	private String title;
 	private String genre;
 	private String author;
-	private String publishedYear;
+	private int publishedYear;
 
 	public String getBookId() {
 		return bookId;
@@ -43,11 +43,11 @@ public class BookDto implements Serializable {
 		this.author = author;
 	}
 
-	public String getPublishedYear() {
+	public int getPublishedYear() {
 		return publishedYear;
 	}
 
-	public void setPublishedYear(String publishedYear) {
+	public void setPublishedYear(int publishedYear) {
 		this.publishedYear = publishedYear;
 	}
 

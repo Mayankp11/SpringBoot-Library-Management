@@ -27,7 +27,7 @@ public class BookServiceImpl implements BookService {
 		BookDto returnValue = new BookDto();
 
 		if (bookRepository.findByTitle(book.getTitle()) != null) {
-			throw new RuntimeException("Error");
+			throw new BookServiceException("Record already exists");
 		}
 
 		BookEntity booksEntity = new BookEntity();

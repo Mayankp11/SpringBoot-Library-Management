@@ -28,7 +28,7 @@ public class BookEntity implements Serializable {
 	private String author;
 
 	@Column(nullable = false, length = 10)
-	private String publishedYear;
+	private int publishedYear;
 
 	public long getId() {
 		return id;
@@ -70,11 +70,11 @@ public class BookEntity implements Serializable {
 		this.author = author;
 	}
 
-	public String getPublishedYear() {
+	public int getPublishedYear() {
 		return publishedYear;
 	}
 
-	public void setPublishedYear(String publishedYear) {
+	public void setPublishedYear(int publishedYear) {
 		this.publishedYear = publishedYear;
 	}
 
