@@ -15,8 +15,8 @@ public class BookEntity implements Serializable {
 	@GeneratedValue
 	private long id;
 
-	@Column(nullable = false, length = 10)
-	private long bookId;
+	@Column(nullable = false, length = 40)
+	private String bookId;
 
 	@Column(nullable = false, length = 50)
 	private String title;
@@ -38,11 +38,11 @@ public class BookEntity implements Serializable {
 		this.id = id;
 	}
 
-	public long getBookId() {
+	public String getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(long bookId) {
+	public void setBookId(String bookId) {
 		this.bookId = bookId;
 	}
 

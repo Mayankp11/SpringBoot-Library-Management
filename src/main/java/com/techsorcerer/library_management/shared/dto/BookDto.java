@@ -5,17 +5,17 @@ import java.io.Serializable;
 public class BookDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private long bookId;
+	private String bookId;
 	private String title;
 	private String genre;
 	private String author;
 	private String publishedYear;
 
-	public long getBookId() {
+	public String getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(long bookId) {
+	public void setBookId(String bookId) {
 		this.bookId = bookId;
 	}
 

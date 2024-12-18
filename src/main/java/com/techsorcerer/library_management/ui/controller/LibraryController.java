@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,9 +39,14 @@ public class LibraryController {
 		return returnValue;
 	}
 
-	@GetMapping
-	public String getBooks() {
-		return "get books";
+	@GetMapping(path = "/{id}")
+	public BookRest getBookById(@PathVariable String id) {
+		BookRest returnValue = new BookRest();
+		BookDto bookDto = bookService.getBookByBookId(id);
+		
+		BeanUtils.copyProperties(bookDto, returnValue);
+		
+		return returnValue;
 	}
 
 	@PutMapping

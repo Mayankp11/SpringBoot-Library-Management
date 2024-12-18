@@ -1,17 +1,17 @@
 package com.techsorcerer.library_management.ui.model.request;
 
 public class BookDetailsRequestModel {
-	private long bookId;
+	private String bookId;
 	private String title;
 	private String genre;
 	private String author;
 	private String publishedYear;
 
-	public long getBookId() {
+	public String getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(long bookId) {
+	public void setBookId(String bookId) {
 		this.bookId = bookId;
 	}
 

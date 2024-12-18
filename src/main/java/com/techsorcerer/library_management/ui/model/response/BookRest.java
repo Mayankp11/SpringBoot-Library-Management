@@ -1,17 +1,17 @@
 package com.techsorcerer.library_management.ui.model.response;
 
 public class BookRest {
-	private long bookId;
+	private String bookId;
 	private String title;
 	private String genre;
 	private String author;
 	private String publishedYear;
 
-	public Long getBookId() {
+	public String getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(Long bookId) {
+	public void setBookId(String bookId) {
 		this.bookId = bookId;
 	}
 
@@ -47,4 +47,5 @@ public class BookRest {
 		this.publishedYear = publishedYear;
 	}
 
+	
 }
