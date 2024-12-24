@@ -68,6 +68,7 @@ public class BookServiceImpl implements BookService {
 	
 		List<BookDto> returnValue =  new ArrayList<>();
 		
+		//If the page is set as 1, it goes page number 0(To show records on the first page)
 		if(page > 0) {
 			page = page - 1;
 		}
@@ -114,6 +115,17 @@ public class BookServiceImpl implements BookService {
 		BeanUtils.copyProperties(updatedBookDetails, returnValue);
 		
 		return returnValue;
+	}
+
+	@Override
+	public void deleteBook(String bookId) {
+		BookEntity bookEntity = bookRepository.findByBookId(bookId);
+		
+		if(bookEntity == null) {
+			throw new BookServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		}
+		
+		bookRepository.delete(bookEntity);
 	}
 
 }

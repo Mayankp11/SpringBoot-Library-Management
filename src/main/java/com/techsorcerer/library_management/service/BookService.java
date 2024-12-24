@@ -13,4 +13,6 @@ public interface BookService {
 	List<BookDto> getBooks(int page, int limit);
 
 	BookDto updateBook(String id, BookDto bookDto);
+
+	void deleteBook(String id);
 }

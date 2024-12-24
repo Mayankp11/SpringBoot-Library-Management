@@ -25,6 +25,9 @@ import com.techsorcerer.library_management.shared.dto.BookDto;
 import com.techsorcerer.library_management.ui.model.request.BookDetailsRequestModel;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
 import com.techsorcerer.library_management.ui.model.response.ErrorMessages;
+import com.techsorcerer.library_management.ui.model.response.OperationStatusModel;
+import com.techsorcerer.library_management.ui.model.response.RequestOperationName;
+import com.techsorcerer.library_management.ui.model.response.RequestOperationStatus;
 
 import jakarta.validation.Valid;
 
@@ -97,8 +100,14 @@ public class LibraryController {
 		return returnValue;
 	}
 
-	@DeleteMapping
-	public String deleteBooks() {
-		return "Book deleted";
+	@DeleteMapping(path = "/{id}",produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public OperationStatusModel deleteBook(@PathVariable String id) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+		returnValue.setOperationName(RequestOperationName.DELETE.name());
+		
+		bookService.deleteBook(id);
+		
+		returnValue.setOperationResult(RequestOperationStatus.Success.name());
+		return returnValue;
 	}
 }
