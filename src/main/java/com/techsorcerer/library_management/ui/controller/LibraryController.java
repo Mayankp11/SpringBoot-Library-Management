@@ -1,5 +1,8 @@
 package com.techsorcerer.library_management.ui.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techsorcerer.library_management.service.BookService;
@@ -17,11 +21,10 @@ import com.techsorcerer.library_management.shared.dto.BookDto;
 import com.techsorcerer.library_management.ui.model.request.BookDetailsRequestModel;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
 
-
 @RestController
 @RequestMapping("library")
 public class LibraryController {
-	
+
 	@Autowired
 	BookService bookService;
 
@@ -39,14 +42,30 @@ public class LibraryController {
 		return returnValue;
 	}
 
+	// Get book by a book id
 	@GetMapping(path = "/{id}")
 	public BookRest getBookById(@PathVariable String id) {
 		BookRest returnValue = new BookRest();
 		BookDto bookDto = bookService.getBookByBookId(id);
-		
+
 		BeanUtils.copyProperties(bookDto, returnValue);
-		
+
 		return returnValue;
+	}
+
+	@GetMapping
+	public List<BookRest> getBooks(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "20")int limit){
+		
+		List<BookRest> returnValue = new ArrayList<>();
+		List<BookDto> books = bookService.getBooks(page,limit);
+		
+		for(BookDto bookDto: books) {
+			BookRest userModel = new BookRest();
+			BeanUtils.copyProperties(bookDto, userModel);
+			returnValue.add(userModel);
+		}
+		
+		return returnValue;		
 	}
 
 	@PutMapping
