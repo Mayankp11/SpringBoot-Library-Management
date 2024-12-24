@@ -33,7 +33,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("library")
-public class LibraryController {
+public class BookController {
 
 	@Autowired
 	BookService bookService;
