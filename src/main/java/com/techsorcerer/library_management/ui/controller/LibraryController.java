@@ -2,10 +2,13 @@ package com.techsorcerer.library_management.ui.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.techsorcerer.library_management.exceptions.MissingRequestBodyException;
 import com.techsorcerer.library_management.service.BookService;
 import com.techsorcerer.library_management.shared.dto.BookDto;
 import com.techsorcerer.library_management.ui.model.request.BookDetailsRequestModel;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
+import com.techsorcerer.library_management.ui.model.response.ErrorMessages;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("library")
@@ -28,9 +35,19 @@ public class LibraryController {
 	@Autowired
 	BookService bookService;
 
-	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
-			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public BookRest addBooks(@RequestBody BookDetailsRequestModel bookDetails) {
+	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public BookRest addBooks(@Valid @RequestBody BookDetailsRequestModel bookDetails, BindingResult bindingResult) {
+		
+//		if @ReuestBody (required = false)
+		//if(bookDetails == null) {
+//			System.out.println("Body is missing, throwing MissingRequestBodyException");
+//			throw new MissingRequestBodyException(ErrorMessages.MISSING_REQUEST_BODY);
+//		}
+		if(bindingResult.hasErrors()) {
+		String requiredFieldsErrorMessages = bindingResult.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining(","));
+			throw new MissingRequestBodyException(ErrorMessages.MISSING_REQUEST_BODY, requiredFieldsErrorMessages);
+		}
+		
 		BookRest returnValue = new BookRest();
 
 		BookDto bookDto = new BookDto();
@@ -43,7 +60,7 @@ public class LibraryController {
 	}
 
 	// Get book by a book id
-	@GetMapping(path = "/{id}")
+	@GetMapping(path = "/{id}" , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public BookRest getBookById(@PathVariable String id) {
 		BookRest returnValue = new BookRest();
 		BookDto bookDto = bookService.getBookByBookId(id);
@@ -68,9 +85,16 @@ public class LibraryController {
 		return returnValue;		
 	}
 
-	@PutMapping
-	public String updateBooks() {
-		return "Books are updated";
+	@PutMapping(path = "/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public BookRest updateBooks(@PathVariable String id, @RequestBody BookDetailsRequestModel bookDetailsRequestModel) {
+		BookRest returnValue = new BookRest();
+		ModelMapper modelMapper = new ModelMapper();
+		BookDto bookDto = modelMapper.map(bookDetailsRequestModel, BookDto.class);
+		
+		BookDto updateBook = bookService.updateBook(id, bookDto);
+		BeanUtils.copyProperties(updateBook, returnValue);
+		
+		return returnValue;
 	}
 
 	@DeleteMapping

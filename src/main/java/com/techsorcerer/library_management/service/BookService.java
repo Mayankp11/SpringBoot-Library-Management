@@ -11,4 +11,6 @@ public interface BookService {
 	BookDto getBookByBookId(String id);
 
 	List<BookDto> getBooks(int page, int limit);
+
+	BookDto updateBook(String id, BookDto bookDto);
 }

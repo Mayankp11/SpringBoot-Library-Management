@@ -4,6 +4,7 @@ package com.techsorcerer.library_management.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.catalina.startup.UserDatabase;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import com.techsorcerer.library_management.io.repository.BookRepository;
 import com.techsorcerer.library_management.service.BookService;
 import com.techsorcerer.library_management.shared.Utils;
 import com.techsorcerer.library_management.shared.dto.BookDto;
+import com.techsorcerer.library_management.ui.model.response.ErrorMessages;
 
 
 
@@ -80,6 +82,36 @@ public class BookServiceImpl implements BookService {
 			BeanUtils.copyProperties(bookEntity, bookDto);
 			returnValue.add(bookDto);
 		}
+		
+		return returnValue;
+	}
+
+	@Override
+	public BookDto updateBook(String bookId, BookDto bookDto) {
+		BookDto returnValue =  new BookDto();
+		BookEntity bookEntity = bookRepository.findByBookId(bookId);
+		
+		if(bookEntity == null) {
+			throw new BookServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		}
+		
+		if (bookDto.getTitle() == null || bookDto.getTitle().isBlank() ||
+			    bookDto.getGenre() == null || bookDto.getGenre().isBlank() ||
+			    bookDto.getPublishedYear() <= 0 ||
+			    bookDto.getAuthor() == null || bookDto.getAuthor().isBlank()) {
+			    
+			    throw new BookServiceException(
+			        "Invalid input: Title, Genre, and Author are required, and Published Year must be a positive number."
+			    );
+		}
+		
+		bookEntity.setTitle(bookDto.getTitle());
+		bookEntity.setGenre(bookDto.getGenre());
+		bookEntity.setAuthor(bookDto.getAuthor());
+		bookEntity.setPublishedYear(bookDto.getPublishedYear());
+		
+		BookEntity updatedBookDetails = bookRepository.save(bookEntity);
+		BeanUtils.copyProperties(updatedBookDetails, returnValue);
 		
 		return returnValue;
 	}

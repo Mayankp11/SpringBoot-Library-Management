@@ -2,6 +2,7 @@ package com.techsorcerer.library_management.ui.model.response;
 
 public enum ErrorMessages {
 	
+	MISSING_REQUEST_BODY(" Request Body is missing, Please provide book details"),
 	MISSING_REQUIRED_FIELDS("Missing required fields. Please check the documentation."),
     RECORD_ALREADY_EXISTS("Record already exists."),
     INTERNAL_SERVER_ERROR("Internal server error. Please try again later."),
@@ -13,6 +14,7 @@ public enum ErrorMessages {
     ACCESS_DENIED("Access denied. You do not have the required permissions."),
     INVALID_INPUT("Invalid input. Please verify the entered data."),
     OPERATION_NOT_ALLOWED("This operation is not allowed.");
+	
 
     // Private field to hold the error message
     private final String errorMessage;
