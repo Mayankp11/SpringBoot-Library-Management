@@ -14,6 +14,9 @@ public class Utils {
 	public String generateBookId(int length) {
 		return generateRandomString(length);
 	}
+	public String generateUserId(int length) {
+		return generateRandomString(length);
+	}
 
 	private String generateRandomString(int length) {
 		StringBuilder builder = new StringBuilder();

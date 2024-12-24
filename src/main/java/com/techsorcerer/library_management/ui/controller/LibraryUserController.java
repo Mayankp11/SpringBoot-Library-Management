@@ -42,7 +42,7 @@ public class LibraryUserController {
 		return "user details";
 	}
 	
-	@GetMapping
+	@GetMapping(path = "/{id}")
 	public String getUserById() {
 		return "return user by user id";
 	}
