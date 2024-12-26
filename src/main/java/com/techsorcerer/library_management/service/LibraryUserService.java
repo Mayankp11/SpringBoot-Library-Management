@@ -16,4 +16,6 @@ public interface LibraryUserService {
 
 	LibraryUserDto updateUser(String id, LibraryUserDto userDto);
 
+	void deleteUser(String id);
+
 }

@@ -22,7 +22,7 @@ import com.techsorcerer.library_management.shared.Utils;
 import com.techsorcerer.library_management.shared.dto.LibraryUserDto;
 import com.techsorcerer.library_management.ui.model.response.ErrorMessages;
 
-import ch.qos.logback.core.util.StringUtil;
+
 
 @Service
 public class LibraryUserServiceImpl implements LibraryUserService {
@@ -141,4 +141,15 @@ public class LibraryUserServiceImpl implements LibraryUserService {
 		
 	}
 
-}
+	@Override
+	public void deleteUser(String id) {
+		LibraryUserEntity libraryUserEntity = libraryUserRepository.findByUserId(id);
+		
+		libraryUserRepository.delete(libraryUserEntity);
+		
+	}
+
+	
+	}
+
+

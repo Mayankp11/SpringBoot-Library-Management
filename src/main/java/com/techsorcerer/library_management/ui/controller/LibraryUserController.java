@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,9 @@ import com.techsorcerer.library_management.service.LibraryUserService;
 import com.techsorcerer.library_management.shared.dto.LibraryUserDto;
 import com.techsorcerer.library_management.ui.model.request.LibraryUserRequestModel;
 import com.techsorcerer.library_management.ui.model.response.LibraryUserRest;
+import com.techsorcerer.library_management.ui.model.response.OperationStatusModel;
+import com.techsorcerer.library_management.ui.model.response.RequestOperationName;
+import com.techsorcerer.library_management.ui.model.response.RequestOperationStatus;
 
 import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
@@ -107,8 +111,23 @@ public class LibraryUserController {
 		return returnValue;
 	}
 	
-	public String deleteUser() {
-		return "delete user";
+	@DeleteMapping(path = "/{id}",produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public OperationStatusModel deleteUser(@PathVariable String id) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+		returnValue.setOperationName(RequestOperationName.DELETE.name());
+		
+		try {
+			libraryUserService.deleteUser(id);
+		
+		returnValue.setOperationResult(RequestOperationStatus.Success.name());
+		} catch (Exception e) {
+			 returnValue.setOperationResult(RequestOperationStatus.Error.name());
+		        returnValue.setOperationResult("An error occurred while deleting the user.");
+		        // You might want to log the exception for further investigation
+		    
+		}
+		
+		return returnValue;
 	}
 
 }
