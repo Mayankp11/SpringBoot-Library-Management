@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -93,8 +94,17 @@ public class LibraryUserController {
 		return returnValue;
 	}
 	
-	public String updateUser() {
-		return "update user";
+	@PutMapping(path = "/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public LibraryUserRest updateUser(@PathVariable String id, @RequestBody LibraryUserRequestModel libraryUserRequestModel) {
+		
+		ModelMapper modelMapper = new ModelMapper();
+		
+		LibraryUserDto userDto = modelMapper.map(libraryUserRequestModel, LibraryUserDto.class);
+		LibraryUserDto updateUser = libraryUserService.updateUser(id, userDto);
+		
+		LibraryUserRest returnValue = modelMapper.map(updateUser, LibraryUserRest.class); 
+		
+		return returnValue;
 	}
 	
 	public String deleteUser() {

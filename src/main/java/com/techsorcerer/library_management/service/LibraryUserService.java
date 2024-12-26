@@ -14,4 +14,6 @@ public interface LibraryUserService {
 
 	LibraryUserDto getUserById(String id);
 
+	LibraryUserDto updateUser(String id, LibraryUserDto userDto);
+
 }
