@@ -18,6 +18,7 @@ import com.techsorcerer.library_management.io.repository.LibraryUserRepository;
 import com.techsorcerer.library_management.service.LibraryUserService;
 import com.techsorcerer.library_management.shared.Utils;
 import com.techsorcerer.library_management.shared.dto.LibraryUserDto;
+import com.techsorcerer.library_management.ui.model.response.ErrorMessages;
 
 @Service
 public class LibraryUserServiceImpl implements LibraryUserService {
@@ -96,6 +97,20 @@ public class LibraryUserServiceImpl implements LibraryUserService {
 			returnvalue.add(userDto);
 		}
 		return returnvalue;
+	}
+
+	@Override
+	public LibraryUserDto getUserById(String id) {
+		
+		LibraryUserEntity userEntity = libraryUserRepository.findByUserId(id);
+		if(userEntity == null) {
+			throw new RuntimeException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		}
+		
+		ModelMapper modelMapper = new ModelMapper();
+		LibraryUserDto userDto= modelMapper.map(userEntity, LibraryUserDto.class);
+		
+		return userDto;
 	}
 
 	

@@ -12,4 +12,6 @@ public interface LibraryUserService {
 
 	List<LibraryUserDto> getAllUsers();
 
+	LibraryUserDto getUserById(String id);
+
 }

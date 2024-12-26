@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,8 +83,14 @@ public class LibraryUserController {
 	
 	
 	@GetMapping(path = "/{id}")
-	public String getUserById() {
-		return "return user by user id";
+	public LibraryUserRest getUserById(@PathVariable String id) {
+		LibraryUserRest returnValue = new LibraryUserRest();
+		ModelMapper modelMapper = new ModelMapper();
+		
+		LibraryUserDto userDto = libraryUserService.getUserById(id);
+		modelMapper.map(userDto, returnValue);
+		
+		return returnValue;
 	}
 	
 	public String updateUser() {

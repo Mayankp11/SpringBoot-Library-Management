@@ -9,5 +9,7 @@ import com.techsorcerer.library_management.io.entity.LibraryUserEntity;
 @Repository
 public interface LibraryUserRepository extends CrudRepository<LibraryUserEntity, Long>, PagingAndSortingRepository<LibraryUserEntity,Long>{
 	
-	LibraryUserEntity findByEmail(String emial);
+	LibraryUserEntity findByEmail(String email);
+
+	LibraryUserEntity findByUserId(String id);
 }
