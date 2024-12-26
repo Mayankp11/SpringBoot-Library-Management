@@ -1,14 +1,12 @@
 package com.techsorcerer.library_management.ui.model.request;
 
-import java.util.Date;
-
 public class LibraryUserRequestModel {
 	private String userId;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
-	private Date dateOfMembership;
+	private String dateOfMembership;
 
 	public String getUserId() {
 		return userId;
@@ -50,11 +48,11 @@ public class LibraryUserRequestModel {
 		this.password = password;
 	}
 
-	public Date getDateOfMembership() {
+	public String getDateOfMembership() {
 		return dateOfMembership;
 	}
 
-	public void setDateOfMembership(Date dateOfMembership) {
+	public void setDateOfMembership(String dateOfMembership) {
 		this.dateOfMembership = dateOfMembership;
 	}
 

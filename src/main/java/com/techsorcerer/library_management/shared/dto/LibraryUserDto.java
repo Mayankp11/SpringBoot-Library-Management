@@ -3,15 +3,15 @@ package com.techsorcerer.library_management.shared.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class LibraryUserDto implements Serializable{
-	
+public class LibraryUserDto implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	private String userId;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
-	private Date dateOfMembership;
+	private String dateOfMembership;
 
 	public String getUserId() {
 		return userId;
@@ -53,13 +53,12 @@ public class LibraryUserDto implements Serializable{
 		this.password = password;
 	}
 
-	public Date getDateOfMembership() {
+	public String getDateOfMembership() {
 		return dateOfMembership;
 	}
 
-	public void setDateOfMembership(Date dateOfMembership) {
+	public void setDateOfMembership(String dateOfMembership) {
 		this.dateOfMembership = dateOfMembership;
 	}
-	
 
 }

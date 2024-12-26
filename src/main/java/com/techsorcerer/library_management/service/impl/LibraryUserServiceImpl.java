@@ -1,10 +1,16 @@
 package com.techsorcerer.library_management.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.techsorcerer.library_management.io.entity.LibraryUserEntity;
@@ -41,13 +47,57 @@ public class LibraryUserServiceImpl implements LibraryUserService {
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); // Format without milliseconds
 	        String formattedDate = dateFormat.format(currentDate);
 	        
-	        libraryUserEntity.setDateOfMembership(currentDate);
+	        libraryUserEntity.setDateOfMembership(formattedDate);
 	    }
+//		libraryUserEntity.setDateOfMembership(new Date());
+		
 		
 		LibraryUserEntity storeUserDetails = libraryUserRepository.save(libraryUserEntity);
 		LibraryUserDto returnValue = modelMapper.map(storeUserDetails, LibraryUserDto.class);
 		
 		return returnValue;
 	}
+
+	@Override
+	public List<LibraryUserDto> getUsers(int page, int limit) {
+		List<LibraryUserDto> returnValue = new ArrayList<>();
+		
+		if(page > 0) {
+			page = page - 1;
+		}
+		
+		Pageable pageableRequest = PageRequest.of(page, limit);
+		
+		Page<LibraryUserEntity> usersPage = libraryUserRepository.findAll(pageableRequest);
+		List<LibraryUserEntity> users = usersPage.getContent();
+		
+		for(LibraryUserEntity userEntity : users) {
+			LibraryUserDto userDto = new LibraryUserDto();
+			BeanUtils.copyProperties(userEntity, userDto);
+			returnValue.add(userDto);
+		}
+		return returnValue;
+	}
+
+	@Override
+	public List<LibraryUserDto> getAllUsers() {
+		List<LibraryUserDto> returnvalue =  new ArrayList<>();
+		
+		List<LibraryUserEntity> allusers = (List<LibraryUserEntity>) libraryUserRepository.findAll();
+		for(LibraryUserEntity libraryUserEntity :allusers ) {
+			LibraryUserDto userDto = new LibraryUserDto();
+			userDto.setUserId(libraryUserEntity.getUserId());
+			userDto.setFirstName(libraryUserEntity.getFirstName());
+			userDto.setLastName(libraryUserEntity.getLastName());
+			userDto.setEmail(libraryUserEntity.getEmail());
+			userDto.setPassword(libraryUserEntity.getPassword());
+			userDto.setDateOfMembership(libraryUserEntity.getDateOfMembership());
+			
+			returnvalue.add(userDto);
+		}
+		return returnvalue;
+	}
+
+	
 
 }

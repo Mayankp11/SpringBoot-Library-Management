@@ -40,7 +40,7 @@ public class LibraryUserEntity implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
-	private Date dateOfMembership;
+	private String dateOfMembership;
 
 	public Long getId() {
 		return id;
@@ -90,12 +90,12 @@ public class LibraryUserEntity implements Serializable {
 		this.password = password;
 	}
 
-	public Date getDateOfMembership() {
+	public String getDateOfMembership() {
 		return dateOfMembership;
 	}
 
-	public void setDateOfMembership(Date dateOfMembership) {
-		this.dateOfMembership = dateOfMembership;
+	public void setDateOfMembership(String formattedDate) {
+		this.dateOfMembership = formattedDate;
 	}
 
 	
