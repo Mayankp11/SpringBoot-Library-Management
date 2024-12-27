@@ -1,5 +1,6 @@
 package com.techsorcerer.library_management.ui.model.response;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class LibraryUserRest {
@@ -9,7 +10,7 @@ public class LibraryUserRest {
 	private String lastName;
 	private String email;
 	private String password;
-	private String dateOfMembership;
+	private LocalDateTime dateOfMembership;
 
 	public String getUserId() {
 		return userId;
@@ -51,11 +52,11 @@ public class LibraryUserRest {
 		this.password = password;
 	}
 
-	public String getDateOfMembership() {
+	public LocalDateTime getDateOfMembership() {
 		return dateOfMembership;
 	}
 
-	public void setDateOfMembership(String dateOfMembership) {
+	public void setDateOfMembership(LocalDateTime dateOfMembership) {
 		this.dateOfMembership = dateOfMembership;
 	}
 

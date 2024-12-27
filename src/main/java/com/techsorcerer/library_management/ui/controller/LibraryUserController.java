@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techsorcerer.library_management.service.LibraryUserService;
@@ -25,7 +25,7 @@ import com.techsorcerer.library_management.ui.model.response.OperationStatusMode
 import com.techsorcerer.library_management.ui.model.response.RequestOperationName;
 import com.techsorcerer.library_management.ui.model.response.RequestOperationStatus;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
+
 
 @RestController
 @RequestMapping("libraryUser")

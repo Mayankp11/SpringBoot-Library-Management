@@ -1,7 +1,8 @@
 package com.techsorcerer.library_management.shared.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 public class LibraryUserDto implements Serializable {
 
@@ -11,7 +12,7 @@ public class LibraryUserDto implements Serializable {
 	private String lastName;
 	private String email;
 	private String password;
-	private String dateOfMembership;
+	private LocalDateTime dateOfMembership;
 
 	public String getUserId() {
 		return userId;
@@ -53,11 +54,11 @@ public class LibraryUserDto implements Serializable {
 		this.password = password;
 	}
 
-	public String getDateOfMembership() {
+	public LocalDateTime getDateOfMembership() {
 		return dateOfMembership;
 	}
 
-	public void setDateOfMembership(String dateOfMembership) {
+	public void setDateOfMembership(LocalDateTime dateOfMembership) {
 		this.dateOfMembership = dateOfMembership;
 	}
 

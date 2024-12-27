@@ -1,6 +1,7 @@
 package com.techsorcerer.library_management.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,14 +47,18 @@ public class LibraryUserServiceImpl implements LibraryUserService {
 		String libraryUserId = utils.generateUserId(30);
 		libraryUserEntity.setUserId(libraryUserId);
 
-		// Auto-assign today's date if `dateOfMembership` is null
-		if (libraryUserEntity.getDateOfMembership() == null) {
-			Date currentDate = new Date(); // Gets the current date and time
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); // Format without milliseconds
-			String formattedDate = dateFormat.format(currentDate);
-
-			libraryUserEntity.setDateOfMembership(formattedDate);
+		if(libraryUserEntity.getDateOfMembership() == null) {
+			
+			libraryUserEntity.setDateOfMembership(LocalDateTime.now());
 		}
+		// Auto-assign today's date if `dateOfMembership` is null
+//		if (libraryUserEntity.getDateOfMembership() == null) {
+//			Date currentDate = new Date(); // Gets the current date and time
+//			SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); // Format without milliseconds
+//			String formattedDate = dateFormat.format(currentDate);
+//
+//			libraryUserEntity.setDateOfMembership(formattedDate);
+//		}
 //		libraryUserEntity.setDateOfMembership(new Date());
 
 		LibraryUserEntity storeUserDetails = libraryUserRepository.save(libraryUserEntity);

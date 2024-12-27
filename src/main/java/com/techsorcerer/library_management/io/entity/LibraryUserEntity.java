@@ -1,15 +1,13 @@
 package com.techsorcerer.library_management.io.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "library_users")
@@ -17,30 +15,28 @@ public class LibraryUserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	
+
 	@Column(nullable = false, length = 50, unique = true)
 	private String userId;
-	
+
 	@Column(nullable = false, length = 30)
 	private String firstName;
-	
+
 	@Column(nullable = false, length = 30)
 	private String lastName;
-	
+
 	@Column(nullable = false, length = 100, unique = true)
 	private String email;
-	
+
 	@Column(nullable = false)
 	private String password;
-	
-	@Temporal(TemporalType.TIMESTAMP)
+
+//	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
-	private String dateOfMembership;
+	private LocalDateTime dateOfMembership;
 
 	public Long getId() {
 		return id;
@@ -49,7 +45,7 @@ public class LibraryUserEntity implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getUserId() {
 		return userId;
 	}
@@ -90,14 +86,12 @@ public class LibraryUserEntity implements Serializable {
 		this.password = password;
 	}
 
-	public String getDateOfMembership() {
+	public LocalDateTime getDateOfMembership() {
 		return dateOfMembership;
 	}
 
-	public void setDateOfMembership(String formattedDate) {
+	public void setDateOfMembership(LocalDateTime formattedDate) {
 		this.dateOfMembership = formattedDate;
 	}
-
-	
 
 }
