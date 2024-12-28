@@ -1,25 +1,28 @@
 package com.techsorcerer.library_management.ui.model.response;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ErrorMessage {
-	private Date timeStamp;
+	private LocalDateTime timeStamp;
 	private String message;
+	private String errorCode;
 
 	public ErrorMessage() {
 	}
 
-	public ErrorMessage(Date timeStamp, String message) {
+	public ErrorMessage(LocalDateTime timeStamp, String message, String errorCode) {
 
 		this.timeStamp = timeStamp;
 		this.message = message;
+		this.errorCode = errorCode;
+
 	}
 
-	public Date getTimeStamp() {
+	public LocalDateTime getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(Date timeStamp) {
+	public void setTimeStamp(LocalDateTime timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 
@@ -30,5 +33,13 @@ public class ErrorMessage {
 	public void setMessage(String message) {
 		this.message = message;
 
+	}
+
+	public String getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
 	}
 }

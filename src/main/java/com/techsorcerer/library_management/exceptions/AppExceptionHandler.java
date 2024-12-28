@@ -1,6 +1,8 @@
 package com.techsorcerer.library_management.exceptions;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
+
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,8 @@ public class AppExceptionHandler {
 		@ExceptionHandler(value = { BookServiceException.class })
 		public ResponseEntity<Object> handleUserServiceException(BookServiceException ex, WebRequest webRequest) 
 		{
-			ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage());
+			String errorCode = "Book Service Error";
+			ErrorMessage errorMessage = new ErrorMessage( LocalDateTime.now(), ex.getMessage(), errorCode);
 			
 			
 			return new ResponseEntity<Object>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
@@ -28,14 +31,16 @@ public class AppExceptionHandler {
 		
 		@ExceptionHandler(value = {LibraryUserServiceException.class})
 		public ResponseEntity<Object> handleLibraryUserServiceException(LibraryUserServiceException ex, WebRequest webRequest){
-			ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage());
+			String errorCode = "Library User Service Error";
+			ErrorMessage errorMessage = new ErrorMessage( LocalDateTime.now(), ex.getMessage(), errorCode);
 			
 			return new ResponseEntity<Object>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
 
 		@ExceptionHandler(value = {BookBorrowException.class})
 		public ResponseEntity<Object> handleBookBorrowException(BookBorrowException ex, WebRequest webRequest){
-			ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage());
+			String errorCode = "Book Borrow Error";
+			ErrorMessage errorMessage = new ErrorMessage(LocalDateTime.now(), ex.getMessage(), errorCode);
 			
 			return new ResponseEntity<Object>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
@@ -43,7 +48,8 @@ public class AppExceptionHandler {
 		@ExceptionHandler(value = { Exception.class })
 		public ResponseEntity<Object> handleOtherException(Exception ex, WebRequest webRequest) 
 		{
-			ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage());
+			String errorCode = "Internal Server Error";
+			ErrorMessage errorMessage = new ErrorMessage(LocalDateTime.now(), ex.getMessage(), errorCode);
 			
 			
 			return new ResponseEntity<Object>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
