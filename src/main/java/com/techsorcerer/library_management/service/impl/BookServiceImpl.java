@@ -3,8 +3,6 @@ package com.techsorcerer.library_management.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.catalina.startup.UserDatabase;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

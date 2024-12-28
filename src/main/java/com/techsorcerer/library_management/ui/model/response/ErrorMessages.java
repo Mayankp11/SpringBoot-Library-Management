@@ -13,7 +13,10 @@ public enum ErrorMessages {
     AUTHENTICATION_FAILED("Authentication failed. Invalid credentials."),
     ACCESS_DENIED("Access denied. You do not have the required permissions."),
     INVALID_INPUT("Invalid input. Please verify the entered data."),
-    OPERATION_NOT_ALLOWED("This operation is not allowed.");
+    OPERATION_NOT_ALLOWED("This operation is not allowed."),
+	
+	//enum for borrowed book
+	BOOK_IS_ALREADY_ISSUED("Book is already issued to someone else, Please check later");
 	
 
     // Private field to hold the error message
