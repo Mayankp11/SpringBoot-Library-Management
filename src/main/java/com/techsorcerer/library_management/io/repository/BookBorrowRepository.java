@@ -14,6 +14,8 @@ public interface BookBorrowRepository extends CrudRepository<BookBorrowEntity, L
 
 BookBorrowEntity findByBookIdAndStatus(BookEntity bookEntity,String status );
 
+BookBorrowEntity findByBorrowId(String borrowId);
+
 
 	
 	

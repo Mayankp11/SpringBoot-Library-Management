@@ -79,4 +79,16 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 		return returnValue;
 	}
 
+	@Override
+	public BookBorrowDto getBorrowedBookDetails(String borrowId) {
+		ModelMapper modelMapper = new ModelMapper();
+		BookBorrowEntity borrowEntity = bookBorrowRepository.findByBorrowId(borrowId);
+		if(borrowEntity == null) {
+			throw new BookBorrowException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		} 
+		
+		BookBorrowDto returnvalue = modelMapper.map(borrowEntity, BookBorrowDto.class);
+		return returnvalue;
+	}
+
 }
