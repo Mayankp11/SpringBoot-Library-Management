@@ -6,6 +6,8 @@ public class BookRest {
 	private String genre;
 	private String author;
 	private int publishedYear;
+	
+	
 
 	public String getBookId() {
 		return bookId;
@@ -46,6 +48,8 @@ public class BookRest {
 	public void setPublishedYear(int publishedYear) {
 		this.publishedYear = publishedYear;
 	}
+
+	
 
 	
 }

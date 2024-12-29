@@ -21,8 +21,10 @@ import com.techsorcerer.library_management.io.repository.LibraryUserRepository;
 import com.techsorcerer.library_management.service.BookBorrowService;
 import com.techsorcerer.library_management.shared.Utils;
 import com.techsorcerer.library_management.shared.dto.BookBorrowDto;
+import com.techsorcerer.library_management.ui.model.response.BookRest;
 import com.techsorcerer.library_management.ui.model.response.BookStatus;
 import com.techsorcerer.library_management.ui.model.response.ErrorMessages;
+import com.techsorcerer.library_management.ui.model.response.LibraryUserRest;
 
 @Service
 public class BookBorrowServiceImpl implements BookBorrowService {
@@ -87,6 +89,7 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 		if(borrowEntity == null) {
 			throw new BookBorrowException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 		} 
+		
 		
 		BookBorrowDto returnvalue = modelMapper.map(borrowEntity, BookBorrowDto.class);
 		return returnvalue;
