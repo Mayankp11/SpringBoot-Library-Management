@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techsorcerer.library_management.exceptions.MissingRequestBodyException;
 import com.techsorcerer.library_management.service.BookService;
+import com.techsorcerer.library_management.shared.dto.BookBorrowDto;
 import com.techsorcerer.library_management.shared.dto.BookDto;
 import com.techsorcerer.library_management.ui.model.request.BookDetailsRequestModel;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
@@ -37,6 +38,8 @@ public class BookController {
 
 	@Autowired
 	BookService bookService;
+	
+	
 
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public BookRest addBooks(@Valid @RequestBody BookDetailsRequestModel bookDetails, BindingResult bindingResult) {

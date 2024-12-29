@@ -1,6 +1,7 @@
 package com.techsorcerer.library_management.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,6 +90,34 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 		
 		BookBorrowDto returnvalue = modelMapper.map(borrowEntity, BookBorrowDto.class);
 		return returnvalue;
+	}
+
+
+	@Override
+	public BookBorrowDto returnBook(BookBorrowDto borrowDto) {
+		
+		BookBorrowEntity borrowEntity = bookBorrowRepository.findByBorrowId(borrowDto.getBorrowId());
+		
+		if(borrowEntity == null) {
+			throw new BookBorrowException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		}
+		
+		if (!borrowEntity.getUserId().equals(borrowDto.getUserId())) {
+	        throw new BookBorrowException("User ID does not match the borrow record.");
+	    }
+		
+		if(borrowEntity.getStatus().equals(BookStatus.RETURNED.name())) {
+			throw new BookBorrowException("Book is already returned");
+		}
+			
+			borrowEntity.setStatus(BookStatus.RETURNED.name());
+			borrowEntity.setReturnDate(LocalDateTime.now());
+		
+		
+		bookBorrowRepository.save(borrowEntity);
+		ModelMapper modelMapper = new ModelMapper();
+		BookBorrowDto updatedBorrowRecord = modelMapper.map(borrowEntity, BookBorrowDto.class);
+		return updatedBorrowRecord;
 	}
 
 }

@@ -7,6 +7,8 @@ public interface BookBorrowService {
 	BookBorrowDto borrowBook(BookBorrowDto borrowDto);
 
 	BookBorrowDto getBorrowedBookDetails(String borrowId);
+
+	BookBorrowDto returnBook( BookBorrowDto borrowDto);
 	
 	
 
