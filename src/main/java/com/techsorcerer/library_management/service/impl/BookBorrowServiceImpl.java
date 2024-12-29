@@ -93,6 +93,7 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 	}
 
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public BookBorrowDto returnBook(BookBorrowDto borrowDto) {
 		

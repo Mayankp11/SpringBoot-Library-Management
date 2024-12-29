@@ -47,12 +47,7 @@ public class BorrowBookController {
 	@PutMapping("/return")
 	public BookBorrowRest returnBorrowedBook(@RequestBody BookBorrowRequestDetails bookBorrowRequestDetails) {
 		ModelMapper modelMapper = new ModelMapper();
-	    modelMapper.typeMap(BookBorrowRequestDetails.class, BookBorrowDto.class)
-        .addMappings(mapper -> {
-            mapper.skip(BookBorrowDto::setBookId);  // Skip bookId
-            mapper.skip(BookBorrowDto::setBorrowDate);  // Skip borrowDate
-            mapper.skip(BookBorrowDto::setStatus);  // Skip status (optional)
-        });
+
 		BookBorrowDto borrowDto = modelMapper.map(bookBorrowRequestDetails, BookBorrowDto.class);
 		System.out.println(borrowDto);
 		BookBorrowDto updateBorrowDetails = bookBorrowService.returnBook(borrowDto);
