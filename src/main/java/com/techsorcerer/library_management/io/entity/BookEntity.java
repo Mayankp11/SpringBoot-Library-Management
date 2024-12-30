@@ -21,10 +21,10 @@ public class BookEntity implements Serializable {
 	@Column(nullable = false, length = 50)
 	private String title;
 
-	@Column(nullable = false, length = 15)
+	@Column(nullable = false, length = 30)
 	private String genre;
 
-	@Column(nullable = false, length = 15)
+	@Column(nullable = false, length = 20)
 	private String author;
 
 	@Column(nullable = false, length = 10)

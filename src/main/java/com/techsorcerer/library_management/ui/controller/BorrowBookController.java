@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import com.techsorcerer.library_management.service.BookBorrowService;
 import com.techsorcerer.library_management.shared.dto.BookBorrowDto;
 import com.techsorcerer.library_management.ui.model.request.BookBorrowRequestDetails;
 import com.techsorcerer.library_management.ui.model.request.BookDetailsRequestModel;
+import com.techsorcerer.library_management.ui.model.request.BookReturnRequestModel;
 import com.techsorcerer.library_management.ui.model.response.BookBorrowRest;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
 import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
@@ -55,12 +57,9 @@ public class BorrowBookController {
 
 	@GetMapping(path = "/{borrowId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public BorrowHistoryRest borrowedBookDetailsById(@PathVariable String borrowId) {
-		ModelMapper modelMapper = new ModelMapper();
-		BorrowHistoryRest borrowedDetails = bookBorrowService.getBorrowedBookDetails(borrowId);
-
-		BorrowHistoryRest returnValue = modelMapper.map(borrowedDetails, BorrowHistoryRest.class);
 		
-		return returnValue;
+		BorrowHistoryRest borrowedDetails = bookBorrowService.getBorrowedBookDetails(borrowId);
+		 return borrowedDetails;
 	}
 
 	@GetMapping(value = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,17 +77,33 @@ public class BorrowBookController {
 		
 	}
 	
-	@PutMapping(value = "/return",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, 
-			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public BookBorrowRest returnBorrowedBook(@RequestBody BookBorrowRequestDetails bookBorrowRequestDetails) {
-		ModelMapper modelMapper = new ModelMapper();
+	@PutMapping(value = "/return", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, 
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+public BookBorrowRest returnBorrowedBook(@RequestBody BookReturnRequestModel bookReturnRequestModel) {
+    // Initialize ModelMapper for mapping DTOs
+    ModelMapper modelMapper = new ModelMapper();
 
-		BookBorrowDto borrowDto = modelMapper.map(bookBorrowRequestDetails, BookBorrowDto.class);
-		System.out.println(borrowDto);
-		BookBorrowDto updateBorrowDetails = bookBorrowService.returnBook(borrowDto);
+    // Adding custom property mappings (if needed) using PropertyMap
+    modelMapper.addMappings(new PropertyMap<BookReturnRequestModel, BookBorrowDto>() {
+        protected void configure() {
+            // Specify how to map the borrowId and userId from the request model to the DTO
+            map(source.getBorrowId(), destination.getBorrowId());
+            map(source.getUserId(), destination.getUserId());
+        }
+    });
 
-		BookBorrowRest returnValue = modelMapper.map(updateBorrowDetails, BookBorrowRest.class);
+    // Map the incoming request data to the BookBorrowDto
+    BookBorrowDto borrowDto = modelMapper.map(bookReturnRequestModel, BookBorrowDto.class);
 
-		return returnValue;
-	}
+    // Call the service to return the book and get the updated borrow record
+    BookBorrowDto updatedBorrowRecord = bookBorrowService.returnBook(borrowDto);
+
+    // Map the updated borrow DTO back to the REST response object (BookBorrowRest)
+    BookBorrowRest returnValue = modelMapper.map(updatedBorrowRecord, BookBorrowRest.class);
+
+    // Return the response to the client
+    return returnValue;
+}
+
+
 }

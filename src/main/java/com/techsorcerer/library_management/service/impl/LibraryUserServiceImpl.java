@@ -126,6 +126,10 @@ public class LibraryUserServiceImpl implements LibraryUserService {
 		ModelMapper modelMapper = new ModelMapper();
 		LibraryUserEntity userEntity = libraryUserRepository.findByUserId(id);
 		
+		if(userEntity == null) {
+			throw new LibraryUserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		}
+		
 		if (userDto == null) {
 			throw new LibraryUserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 		}

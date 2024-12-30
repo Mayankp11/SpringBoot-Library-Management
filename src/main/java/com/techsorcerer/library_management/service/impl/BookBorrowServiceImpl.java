@@ -122,29 +122,45 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public BookBorrowDto returnBook(BookBorrowDto borrowDto) {
+	    // Fetch the borrow entity from the database using borrowId
+	    BookBorrowEntity borrowEntity = bookBorrowRepository.findByBorrowId(borrowDto.getBorrowId());
+	  
 
-		BookBorrowEntity borrowEntity = bookBorrowRepository.findByBorrowId(borrowDto.getBorrowId());
+	    if (borrowEntity == null) {
+	        throw new BookBorrowException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+	    }
+	    System.out.println("Hello");
+	    
+	    System.out.println(borrowEntity.getBookId().getBookId());
+	    System.out.println(borrowDto.getBookId());
+	    if( !borrowEntity.getBookId().getBookId().equals(borrowDto.getBookId()) || !borrowEntity.getUserId().getUserId().equals(borrowDto.getUserId())) {
+	    	throw new BookBorrowException("User ID does not match the borrow record.");
+	    }
 
-		if (borrowEntity == null) {
-			throw new BookBorrowException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-		}
+//	    // Ensure that the provided userId matches the userId in the borrow record
+//	    if (borrowEntity.getUserId() == null || borrowDto.getUserId() == null || 
+//	    	    !borrowEntity.getUserId().equals(borrowDto.getUserId())) {
+//	    	    throw new BookBorrowException("User ID does not match the borrow record.");
+//	    	}
 
-		if (!borrowEntity.getUserId().equals(borrowDto.getUserId())) {
-			throw new BookBorrowException("User ID does not match the borrow record.");
-		}
+	    // Ensure that the book is not already returned
+	    if (borrowEntity.getStatus().equals(BookStatus.RETURNED.name())) {
+	        throw new BookBorrowException("Book is already returned");
+	    }
 
-		if (borrowEntity.getStatus().equals(BookStatus.RETURNED.name())) {
-			throw new BookBorrowException("Book is already returned");
-		}
+	    // Update the status to RETURNED and set the returnDate to the current time
+	    borrowEntity.setStatus(BookStatus.RETURNED.name());
+	    borrowEntity.setReturnDate(LocalDateTime.now());
 
-		borrowEntity.setStatus(BookStatus.RETURNED.name());
-		borrowEntity.setReturnDate(LocalDateTime.now());
+	    // Save the updated borrow entity back to the database
+	    bookBorrowRepository.save(borrowEntity);
 
-		bookBorrowRepository.save(borrowEntity);
-		ModelMapper modelMapper = new ModelMapper();
-		BookBorrowDto updatedBorrowRecord = modelMapper.map(borrowEntity, BookBorrowDto.class);
-		return updatedBorrowRecord;
+	    // Map the updated borrow entity to the BookBorrowDto for the response
+	    ModelMapper modelMapper = new ModelMapper();
+	    BookBorrowDto updatedBorrowRecord = modelMapper.map(borrowEntity, BookBorrowDto.class);
+	    return updatedBorrowRecord;
 	}
+
 
 	@Override
 	public List<BookBorrowDto> getAllBorrowedBooks() {
