@@ -10,8 +10,6 @@ public class BookBorrowRest {
 	private LocalDateTime returnDate;
 	private String status;
 	
-	private LibraryUserRest libraryUserRest;
-	private BookRest bookRest;
 
 	public String getBorrowId() {
 		return borrowId;
@@ -59,22 +57,6 @@ public class BookBorrowRest {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public LibraryUserRest getLibraryUserRest() {
-		return libraryUserRest;
-	}
-
-	public void setLibraryUserRest(LibraryUserRest libraryUserRest) {
-		this.libraryUserRest = libraryUserRest;
-	}
-
-	public BookRest getBookRest() {
-		return bookRest;
-	}
-
-	public void setBookRest(BookRest bookRest) {
-		this.bookRest = bookRest;
 	}
 
 }

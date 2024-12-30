@@ -1,7 +1,11 @@
 package com.techsorcerer.library_management.ui.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +21,11 @@ import com.techsorcerer.library_management.io.repository.LibraryUserRepository;
 import com.techsorcerer.library_management.service.BookBorrowService;
 import com.techsorcerer.library_management.shared.dto.BookBorrowDto;
 import com.techsorcerer.library_management.ui.model.request.BookBorrowRequestDetails;
-
+import com.techsorcerer.library_management.ui.model.request.BookDetailsRequestModel;
 import com.techsorcerer.library_management.ui.model.response.BookBorrowRest;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
+import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
+import com.techsorcerer.library_management.ui.model.response.BookBorrowRest;
 import com.techsorcerer.library_management.ui.model.response.LibraryUserRest;
 
 @RestController
@@ -34,7 +40,8 @@ public class BorrowBookController {
 	@Autowired
 	BookRepository bookRepository;
 
-	@PostMapping
+	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, 
+			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public BookBorrowRest borrowBook(@RequestBody BookBorrowRequestDetails borrowRequestDetails) {
 		ModelMapper modelMapper = new ModelMapper();
 
@@ -46,31 +53,33 @@ public class BorrowBookController {
 		return returnValue;
 	}
 
-	@GetMapping(path = "/{borrowId}")
-	public BookBorrowRest borrowedBookDetailsById(@PathVariable String borrowId) {
+	@GetMapping(path = "/{borrowId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public BorrowHistoryRest borrowedBookDetailsById(@PathVariable String borrowId) {
 		ModelMapper modelMapper = new ModelMapper();
-		BookBorrowDto borrowedDetails = bookBorrowService.getBorrowedBookDetails(borrowId);
+		BorrowHistoryRest borrowedDetails = bookBorrowService.getBorrowedBookDetails(borrowId);
 
-		BookBorrowRest returnValue = modelMapper.map(borrowedDetails, BookBorrowRest.class);
+		BorrowHistoryRest returnValue = modelMapper.map(borrowedDetails, BorrowHistoryRest.class);
 		
-		 // Fetching the related user and book details from the respective repositories
-	    LibraryUserEntity libraryUserEntity = libraryUserRepository.findByUserId(borrowedDetails.getUserId());
-	    BookEntity bookEntity = bookRepository.findByBookId(borrowedDetails.getBookId());
-	    
-	    
-	    
-	    // Mapping the user and book entities to their respective response objects (DTOs)
-	    LibraryUserRest userRest = modelMapper.map(libraryUserEntity, LibraryUserRest.class);
-	    BookRest bookRest = modelMapper.map(bookEntity, BookRest.class);
-	    
-	    // Setting the user and book details into the response object
-	    returnValue.setLibraryUserRest(userRest);
-	    returnValue.setBookRest(bookRest);
-
 		return returnValue;
 	}
 
-	@PutMapping("/return")
+	@GetMapping(value = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<BookBorrowRest> borrowedBooksDetails() {
+		ModelMapper modelMapper = new ModelMapper();
+		List<BookBorrowRest> returnValue = new ArrayList<BookBorrowRest>();
+		List<BookBorrowDto> borrowDetails = bookBorrowService.getAllBorrowedBooks();
+		
+		for(BookBorrowDto borrow: borrowDetails) {
+			BookBorrowRest borrowHistoryRest = modelMapper.map(borrow, BookBorrowRest.class);
+			returnValue.add(borrowHistoryRest);
+		}
+		
+		return returnValue;
+		
+	}
+	
+	@PutMapping(value = "/return",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, 
+			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public BookBorrowRest returnBorrowedBook(@RequestBody BookBorrowRequestDetails bookBorrowRequestDetails) {
 		ModelMapper modelMapper = new ModelMapper();
 

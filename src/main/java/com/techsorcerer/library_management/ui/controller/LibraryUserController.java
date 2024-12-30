@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techsorcerer.library_management.service.LibraryUserService;
@@ -52,23 +52,23 @@ public class LibraryUserController {
 		return returnValue;
 	}
 	
-//	@GetMapping(produces = {
-//			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-//	public List<LibraryUserRest> getUser(@RequestParam(value = "page", defaultValue = "0")int page,int limit) {
-//		List<LibraryUserRest> returnValue = new ArrayList<>();
-//		
-//		List<LibraryUserDto> getUsers = libraryUserService.getUsers(page, limit);
-//		
-//		for(LibraryUserDto userDto : getUsers) {
-//			LibraryUserRest model = new LibraryUserRest();
-//			BeanUtils.copyProperties(userDto, model);
-//			returnValue.add(model);
-//		}
-//		
-//		return returnValue;
-//	}
-	
 	@GetMapping(produces = {
+			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public List<LibraryUserRest> getUser(@RequestParam(value = "page", defaultValue = "0")int page,int limit) {
+		List<LibraryUserRest> returnValue = new ArrayList<>();
+		
+		List<LibraryUserDto> getUsers = libraryUserService.getUsers(page, limit);
+		
+		for(LibraryUserDto userDto : getUsers) {
+			LibraryUserRest model = new LibraryUserRest();
+			BeanUtils.copyProperties(userDto, model);
+			returnValue.add(model);
+		}
+		
+		return returnValue;
+	}
+	
+	@GetMapping(value = "/listUsers",produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public List<LibraryUserRest> getAllUsers(){
 		List<LibraryUserRest> returnValue = new ArrayList<>();
