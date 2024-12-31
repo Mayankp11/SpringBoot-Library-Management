@@ -14,6 +14,8 @@ public interface BookBorrowService {
 	BookBorrowDto returnBook( BookBorrowDto borrowDto);
 
 	List<BookBorrowDto> getAllBorrowedBooks();
+
+	void deleteBorrowRecord(String borrowId);
 	
 	
 
