@@ -177,8 +177,8 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 		return returnValue;
 
 	}
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 
 	@Override
 	public void deleteBorrowRecord(String borrowId) {
@@ -187,5 +187,5 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 		bookBorrowRepository.delete(borrowEntity);
 		
 	}
->>>>>>> commits-recovery-branch
+//>>>>>>> commits-recovery-branch
 }
