@@ -177,4 +177,15 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 		return returnValue;
 
 	}
+<<<<<<< HEAD
+=======
+
+	@Override
+	public void deleteBorrowRecord(String borrowId) {
+		BookBorrowEntity borrowEntity = bookBorrowRepository.findByBorrowId(borrowId);
+		
+		bookBorrowRepository.delete(borrowEntity);
+		
+	}
+>>>>>>> commits-recovery-branch
 }

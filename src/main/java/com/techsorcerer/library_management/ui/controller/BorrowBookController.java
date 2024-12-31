@@ -7,6 +7,10 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+<<<<<<< HEAD
+=======
+import org.springframework.web.bind.annotation.DeleteMapping;
+>>>>>>> commits-recovery-branch
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +33,12 @@ import com.techsorcerer.library_management.ui.model.response.BookRest;
 import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
 import com.techsorcerer.library_management.ui.model.response.BookBorrowRest;
 import com.techsorcerer.library_management.ui.model.response.LibraryUserRest;
+<<<<<<< HEAD
+=======
+import com.techsorcerer.library_management.ui.model.response.OperationStatusModel;
+import com.techsorcerer.library_management.ui.model.response.RequestOperationName;
+import com.techsorcerer.library_management.ui.model.response.RequestOperationStatus;
+>>>>>>> commits-recovery-branch
 
 @RestController
 @RequestMapping("borrow")
@@ -104,6 +114,20 @@ public BookBorrowRest returnBorrowedBook(@RequestBody BookReturnRequestModel boo
     // Return the response to the client
     return returnValue;
 }
+<<<<<<< HEAD
+=======
+	@DeleteMapping(path = "/{borrowId}")
+	public OperationStatusModel deleteABorrowRecord(@PathVariable String borrowId) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+		returnValue.setOperationName(RequestOperationName.DELETE.name());
+		
+		bookBorrowService.deleteBorrowRecord(borrowId);
+		
+		returnValue.setOperationResult(RequestOperationStatus.Success.name());
+		return returnValue;
+		
+	}
+>>>>>>> commits-recovery-branch
 
 
 }

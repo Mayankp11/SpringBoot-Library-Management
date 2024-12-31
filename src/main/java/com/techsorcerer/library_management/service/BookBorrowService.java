@@ -14,6 +14,11 @@ public interface BookBorrowService {
 	BookBorrowDto returnBook( BookBorrowDto borrowDto);
 
 	List<BookBorrowDto> getAllBorrowedBooks();
+<<<<<<< HEAD
+=======
+
+	void deleteBorrowRecord(String borrowId);
+>>>>>>> commits-recovery-branch
 	
 	
 
