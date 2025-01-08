@@ -26,6 +26,8 @@ import com.techsorcerer.library_management.shared.Utils;
 import com.techsorcerer.library_management.shared.dto.BookBorrowDto;
 import com.techsorcerer.library_management.shared.dto.BookDto;
 import com.techsorcerer.library_management.ui.model.response.BookBorrowRest;
+import com.techsorcerer.library_management.ui.model.response.BookHistoryRest;
+import com.techsorcerer.library_management.ui.model.response.BookUserHistoryRest;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
 import com.techsorcerer.library_management.ui.model.response.BookStatus;
 import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
@@ -234,11 +236,50 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 		LibraryUserRest libraryUserRest = modelMapper.map(user, LibraryUserRest.class);
 		
 		//Add both dto to response
-		
 		UserBorrowHistoryRest returnValue = new UserBorrowHistoryRest();
 		returnValue.setBorrowedBooks(borrowedBooks);
 		returnValue.setLibraryUser(libraryUserRest);
 		
 		return returnValue;
 	}
+
+	@Override
+	public BookHistoryRest getBookHistory(String bookId) {
+		BookEntity bookEntity = bookRepository.findByBookId(bookId);
+		
+		if(bookEntity == null) {
+			throw new BookBorrowException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		}
+		
+		List<BookBorrowEntity> borrowEntities = bookBorrowRepository.findByBookId(bookEntity);
+		
+		   // Map each borrow record to the BookUserHistoryRest DTO, which includes user details and borrowId
+	    List<BookUserHistoryRest> usersList = borrowEntities.stream()
+	            .map(entity -> {
+	                // Get the user details from the borrow record
+	                LibraryUserEntity userEntity = entity.getUserId();
+	                
+	                // Map to BookUserHistoryRest, including borrowId and status
+	                BookUserHistoryRest historyRest = new BookUserHistoryRest();
+	                historyRest.setUserId(userEntity.getUserId());
+	                historyRest.setFirstName(userEntity.getFirstName());
+	                historyRest.setLastName(userEntity.getLastName());
+	                historyRest.setEmail(userEntity.getEmail());
+	                historyRest.setBorrowId(entity.getBorrowId());
+	                historyRest.setStatus(entity.getStatus()); // Borrowed or Returned
+	                
+	                return historyRest;
+	            })
+	            .collect(Collectors.toList());
+	    
+		
+		BookRest bookRest = modelMapper.map(bookEntity, BookRest.class);
+		 // Create the response DTO
+	    
+		BookHistoryRest response = new BookHistoryRest();
+		response.setBookRest(bookRest);
+		response.setListOfUsers(usersList);
+
+		return response;
+}
 }

@@ -3,6 +3,8 @@ package com.techsorcerer.library_management.service;
 import java.util.List;
 
 import com.techsorcerer.library_management.shared.dto.BookBorrowDto;
+import com.techsorcerer.library_management.ui.model.response.BookUserHistoryRest;
+import com.techsorcerer.library_management.ui.model.response.BookHistoryRest;
 import com.techsorcerer.library_management.ui.model.response.BookStatus;
 import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
 import com.techsorcerer.library_management.ui.model.response.UserBorrowHistoryRest;
@@ -23,6 +25,8 @@ public interface BookBorrowService {
 	List<BookBorrowDto> getBookByStatus(String status);
 
 	UserBorrowHistoryRest getUserBorrowHistory(String userId);
+
+	BookHistoryRest getBookHistory(String bookId);
 
 	
 	

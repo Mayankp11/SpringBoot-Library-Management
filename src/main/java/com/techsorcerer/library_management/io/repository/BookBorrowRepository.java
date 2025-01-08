@@ -23,6 +23,8 @@ List<BookBorrowEntity> findByStatus(String status);
 
 List<BookBorrowEntity> findByUserId(LibraryUserEntity user);
 
+List<BookBorrowEntity> findByBookId(BookEntity bookEntity);
+
 
 	
 	

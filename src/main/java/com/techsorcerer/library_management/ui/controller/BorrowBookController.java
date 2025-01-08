@@ -28,6 +28,8 @@ import com.techsorcerer.library_management.ui.model.request.BookBorrowRequestDet
 import com.techsorcerer.library_management.ui.model.request.BookDetailsRequestModel;
 import com.techsorcerer.library_management.ui.model.request.BookReturnRequestModel;
 import com.techsorcerer.library_management.ui.model.response.BookBorrowRest;
+import com.techsorcerer.library_management.ui.model.response.BookHistoryRest;
+import com.techsorcerer.library_management.ui.model.response.BookUserHistoryRest;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
 import com.techsorcerer.library_management.ui.model.response.BookStatus;
 import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
@@ -121,8 +123,13 @@ public class BorrowBookController {
 		UserBorrowHistoryRest userHistory = bookBorrowService.getUserBorrowHistory(userId);
 		
 		return userHistory;
+	}
+	
+	@GetMapping(value = "/history/book/{bookId}")
+	public BookHistoryRest getBookHistory(@PathVariable String bookId) {
+		BookHistoryRest bookHistory = bookBorrowService.getBookHistory(bookId);
 		
-		
+		return bookHistory;
 	}
 	
 	@PutMapping(value = "/return", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, 
