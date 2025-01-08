@@ -3,6 +3,7 @@ package com.techsorcerer.library_management.service;
 import java.util.List;
 
 import com.techsorcerer.library_management.shared.dto.BookBorrowDto;
+import com.techsorcerer.library_management.ui.model.response.BookStatus;
 import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
 
 public interface BookBorrowService {
@@ -17,6 +18,8 @@ public interface BookBorrowService {
 
 
 	void deleteBorrowRecord(String borrowId);
+
+	List<BookBorrowDto> getBookByStatus(String status);
 
 	
 	

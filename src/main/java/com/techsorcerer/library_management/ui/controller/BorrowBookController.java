@@ -29,6 +29,7 @@ import com.techsorcerer.library_management.ui.model.request.BookDetailsRequestMo
 import com.techsorcerer.library_management.ui.model.request.BookReturnRequestModel;
 import com.techsorcerer.library_management.ui.model.response.BookBorrowRest;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
+import com.techsorcerer.library_management.ui.model.response.BookStatus;
 import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
 import com.techsorcerer.library_management.ui.model.response.BookBorrowRest;
 import com.techsorcerer.library_management.ui.model.response.LibraryUserRest;
@@ -82,6 +83,21 @@ public class BorrowBookController {
 		}
 		
 		return returnValue;
+		
+	}
+	
+	@GetMapping(value = "/history/borrowed", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<BookBorrowRest> getBorrowedBooks() {
+		ModelMapper modelMapper = new ModelMapper();
+		List<BookBorrowRest> borrowedBooks = new ArrayList<>();
+		List<BookBorrowDto> borrowDetails = bookBorrowService.getBookByStatus(BookStatus.BORROWED.name());
+		
+		for(BookBorrowDto dto: borrowDetails) {
+			BookBorrowRest borrowRest = modelMapper.map(dto, BookBorrowRest.class);
+			borrowedBooks.add(borrowRest);
+		}
+		
+		return borrowedBooks;
 		
 	}
 	

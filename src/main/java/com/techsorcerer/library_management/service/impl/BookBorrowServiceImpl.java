@@ -23,6 +23,7 @@ import com.techsorcerer.library_management.io.repository.LibraryUserRepository;
 import com.techsorcerer.library_management.service.BookBorrowService;
 import com.techsorcerer.library_management.shared.Utils;
 import com.techsorcerer.library_management.shared.dto.BookBorrowDto;
+import com.techsorcerer.library_management.shared.dto.BookDto;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
 import com.techsorcerer.library_management.ui.model.response.BookStatus;
 import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
@@ -43,6 +44,13 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 
 	@Autowired
 	Utils utis;
+	
+	@Autowired
+	 private ModelMapper modelMapper;
+
+//	    public BookBorrowServiceImpl(ModelMapper modelMapper) {
+//	        this.modelMapper = modelMapper;
+//	    }
 
 	@Override
 	public BookBorrowDto borrowBook(BookBorrowDto borrowDto) {
@@ -156,7 +164,7 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 	    bookBorrowRepository.save(borrowEntity);
 
 	    // Map the updated borrow entity to the BookBorrowDto for the response
-	    ModelMapper modelMapper = new ModelMapper();
+	   
 	    BookBorrowDto updatedBorrowRecord = modelMapper.map(borrowEntity, BookBorrowDto.class);
 	    return updatedBorrowRecord;
 	}
@@ -188,4 +196,17 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 		
 	}
 //>>>>>>> commits-recovery-branch
+
+	@Override
+	public List<BookBorrowDto> getBookByStatus(String status) {
+		List<BookBorrowEntity> getDetails = bookBorrowRepository.findByStatus(status);
+		
+		List<BookBorrowDto> borrowDto = new ArrayList<>();
+		for(BookBorrowEntity entity : getDetails) {
+			BookBorrowDto dto = modelMapper.map(entity, BookBorrowDto.class);
+			borrowDto.add(dto);
+		}
+		
+		return borrowDto;
+	}
 }
