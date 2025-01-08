@@ -100,6 +100,20 @@ public class BorrowBookController {
 		return borrowedBooks;
 		
 	}
+	@GetMapping(value = "/history/returned", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<BookBorrowRest> getReturnedBooks() {
+		ModelMapper modelMapper = new ModelMapper();
+		List<BookBorrowRest> borrowedBooks = new ArrayList<>();
+		List<BookBorrowDto> borrowDetails = bookBorrowService.getBookByStatus(BookStatus.RETURNED.name());
+		
+		for(BookBorrowDto dto: borrowDetails) {
+			BookBorrowRest borrowRest = modelMapper.map(dto, BookBorrowRest.class);
+			borrowedBooks.add(borrowRest);
+		}
+		
+		return borrowedBooks;
+		
+	}
 	
 	@PutMapping(value = "/return", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
