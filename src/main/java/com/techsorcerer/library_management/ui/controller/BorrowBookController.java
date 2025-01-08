@@ -37,6 +37,7 @@ import com.techsorcerer.library_management.ui.model.response.LibraryUserRest;
 import com.techsorcerer.library_management.ui.model.response.OperationStatusModel;
 import com.techsorcerer.library_management.ui.model.response.RequestOperationName;
 import com.techsorcerer.library_management.ui.model.response.RequestOperationStatus;
+import com.techsorcerer.library_management.ui.model.response.UserBorrowHistoryRest;
 
 
 @RestController
@@ -115,7 +116,14 @@ public class BorrowBookController {
 		
 	}
 	
-	
+	@GetMapping(value = "/history/user/{userId}")
+	public UserBorrowHistoryRest getUserBorrowHistory( @PathVariable String userId){
+		UserBorrowHistoryRest userHistory = bookBorrowService.getUserBorrowHistory(userId);
+		
+		return userHistory;
+		
+		
+	}
 	
 	@PutMapping(value = "/return", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

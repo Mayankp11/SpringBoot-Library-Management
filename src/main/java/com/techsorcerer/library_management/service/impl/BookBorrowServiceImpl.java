@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
@@ -24,11 +25,13 @@ import com.techsorcerer.library_management.service.BookBorrowService;
 import com.techsorcerer.library_management.shared.Utils;
 import com.techsorcerer.library_management.shared.dto.BookBorrowDto;
 import com.techsorcerer.library_management.shared.dto.BookDto;
+import com.techsorcerer.library_management.ui.model.response.BookBorrowRest;
 import com.techsorcerer.library_management.ui.model.response.BookRest;
 import com.techsorcerer.library_management.ui.model.response.BookStatus;
 import com.techsorcerer.library_management.ui.model.response.BorrowHistoryRest;
 import com.techsorcerer.library_management.ui.model.response.ErrorMessages;
 import com.techsorcerer.library_management.ui.model.response.LibraryUserRest;
+import com.techsorcerer.library_management.ui.model.response.UserBorrowHistoryRest;
 
 @Service
 public class BookBorrowServiceImpl implements BookBorrowService {
@@ -208,5 +211,34 @@ public class BookBorrowServiceImpl implements BookBorrowService {
 		}
 		
 		return borrowDto;
+	}
+
+	@Override
+	public UserBorrowHistoryRest getUserBorrowHistory(String userId) {
+		// return tyoe has LibraryUserRest and List<BookRest>
+		
+		LibraryUserEntity user = libraryUserRepository.findByUserId(userId);
+		
+		if(user == null) {
+			throw new BookBorrowException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		}
+		
+		List<BookBorrowEntity> borrowEntities = bookBorrowRepository.findByUserId(user);
+		
+		// Map the borrow records to bBookBorrowRest Dto's
+		List<BookBorrowRest> borrowedBooks = borrowEntities.stream()
+				.map(entity -> modelMapper.map(entity, BookBorrowRest.class))
+				.collect(Collectors.toList());
+		
+		 // Map the LibraryUserEntity to LibraryUserRest DTO
+		LibraryUserRest libraryUserRest = modelMapper.map(user, LibraryUserRest.class);
+		
+		//Add both dto to response
+		
+		UserBorrowHistoryRest returnValue = new UserBorrowHistoryRest();
+		returnValue.setBorrowedBooks(borrowedBooks);
+		returnValue.setLibraryUser(libraryUserRest);
+		
+		return returnValue;
 	}
 }
